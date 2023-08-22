@@ -1,3 +1,4 @@
+<!-- email user subscription form -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,12 +10,62 @@
 </head>
 <body>
 
+    <!-- hero section to store background image and headings and input form -->
     <div class="hero">
-        
+        <!-- small heading, large heading and paragraph -->
+        <h3>
+            coming soon!
+        </h3>
+        <h1>
+            OurBrand New <br>Website is on it's way
+        </h1>
+
+        <p>Subscribe for more information</p>
+
+        <!-- our form which takes a name as submit to google sheets -->
+        <form name="submit-to-google-sheet">
+            <!-- our input form is for emails, name is email and information is required-->
+            <input type="email" name="Email" placeholder="Your Email ID: " required>
+            <button type="submit"><img src="images/send-icon.png" width="30px"></button>
+        </form>
+        <span id="msg"></span>
     </div>
 
+    <script>
+        // our js takes a script url to send information
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyRqFmTO8XpWZPqd_2_UI0xJgJy_MLiGuiOE2WRgSkA7Jf2MHNoFzdbfghgiOf9rV9L8Q/exec'
+    // our form is a submit to google sheet
+    const form = document.forms['submit-to-google-sheet']
+    // our message is the span tag to confirm subscription
+    const msg = document.getElementById("msg");
     
+    // form add event listener
+    // I think the submit parameter accesses our button which somehow understands the input fields information is connected
+    form.addEventListener('submit', e => {
+        // prevent default action
+        e.preventDefault()
+        // fetch our script url google sheets document
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        // then with our response
+        .then(response => {
+            // set inner html
+            msg.innerHTML = "Thank you for Subscribing!"
+            // setTimeout on message to 5 seconds
+            // reset message innerHTML to blank string
+            setTimeout(function() {
+                msg.innerHTML = ""
+            }, 5000)
+            // reset our form to refresh page, i think
+            form.reset();
+        }
+        )
+        // catch error and console.log
+        .catch(error => console.error('Error!', error.message))
+    })
+    </script>
 
+    <!-- github google information  -->
+<!-- https://github.com/jamiewilson/form-to-google-sheets -->
     
 </body>
 </html>
